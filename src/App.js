@@ -40,10 +40,12 @@ function App() {
   };
 
   const todaysTextStyle = {
-    fontSize: 22,
-    fontWeight: '900',
+    fontSize: 45,           // bigger font size
+    fontWeight: '900',      // very bold
     marginTop: 6,
-    color: '#ffeb3b',
+    color: '#ffffff',       // pure white
+    textShadow: '2px 2px 6px rgba(0, 0, 0, 0.8)', // strong shadow for contrast
+    letterSpacing: '1px',   // add some spacing for clarity
   };
 
   const dateTextStyle = {
@@ -90,59 +92,59 @@ function App() {
 
   const doorLinks = {
     1: {
-      url: 'https://www.netflix.com/watch/70026002',
-      image: 'https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg',
-      title: 'Avengers: Infinity War',
+      url: 'https://www.disneyplus.com/play/c9ee959b-7249-4a4c-9708-9ffd1ddb00f1',
+      image: 'https://m.media-amazon.com/images/M/MV5BM2ZmNjQ2MzAtNDlhNi00MmQyLWJhZDMtNmJiMjFlOWY4MzcxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+      title: 'Gaurdians of the Galaxy',
     },
     2: {
-      url: 'https://www.disneyplus.com/movies/the-lion-king-2019/9c3hIHg1aNx8',
-      image: 'https://image.tmdb.org/t/p/w500/2bXbqYdUdNVa8VIWXVfclP2ICtT.jpg',
-      title: 'The Lion King (2019)',
+      url: 'https://www.disneyplus.com/play/5f9e4c69-7f78-42d7-b491-dd9e44f27ba1',
+      image: 'https://m.media-amazon.com/images/I/81J-IYOA4IL._UF894,1000_QL80_.jpg',
+      title: 'Gravity Falls',
     },
     3: {
-      url: 'https://www.netflix.com/watch/80117470',
-      image: 'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
-      title: 'Stranger Things',
+      url: 'https://www.disneyplus.com/play/afc32deb-a674-4d4b-a87a-bb2b2bf8ef01',
+      image: 'https://i.ebayimg.com/00/s/MTYwMFgxMDM1/z/euQAAOSwpE1c5Vl2/$_57.JPG?set_id=8800005007',
+      title: 'Brave',
     },
     4: {
-      url: 'https://www.disneyplus.com/movies/frozen-ii/3j3U6FaYQHHT',
-      image: 'https://image.tmdb.org/t/p/w500/pjeMs3yqRmFL3giJy4PMXWZTTPa.jpg',
-      title: 'Frozen II',
+      url: 'https://www.disneyplus.com/play/3a5596d6-5133-4a8e-8d21-00e1531a4e0f',
+      image: 'https://m.media-amazon.com/images/M/MV5BNGE0YTVjNzUtNzJjOS00NGNlLTgxMzctZTY4YTE1Y2Y1ZTU4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+      title: 'Avengers (2012)',
     },
     5: {
-      url: 'https://www.netflix.com/watch/80192098',
-      image: 'https://image.tmdb.org/t/p/w500/lFSSLTlFozwpaGlO31OoUeirBgQ.jpg',
-      title: 'The Witcher',
+      url: 'https://www.disneyplus.com/play/8cda6d24-155f-46e1-8f9e-9a32b2d462db',
+      image: 'https://cdn.europosters.eu/image/750/3187.jpg',
+      title: 'High School Musical',
     },
     6: {
-      url: 'https://www.disneyplus.com/movies/star-wars-episode-vii-the-force-awakens/7ze7YNmCa8zX9NNZV9h8N8VPhzN',
-      image: 'https://image.tmdb.org/t/p/w500/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg',
-      title: 'Star Wars: The Force Awakens',
+      url: 'https://www.disneyplus.com/play/9a280e53-fcc0-4e17-a02c-b1f40913eb0b',
+      image: 'https://cdn2.penguin.com.au/covers/original/9781473544888.jpg',
+      title: 'Star Wars: A New Hope',
     },
     7: {
-      url: 'https://www.netflix.com/watch/80234304',
-      image: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
-      title: 'Black Panther',
+      url: 'https://www.disneyplus.com/play/d4b87168-7d0b-49bc-b138-457ab7723feb',
+      image: 'https://upload.wikimedia.org/wikipedia/sco/0/0a/Inside_Out_%282015_film%29_poster.jpg',
+      title: 'Inside Out',
     },
     8: {
-      url: 'https://www.disneyplus.com/movies/toy-story-4/6UQi7OEdX2bQ',
-      image: 'https://image.tmdb.org/t/p/w500/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg',
-      title: 'Toy Story 4',
+      url: 'https://www.disneyplus.com/play/b463d937-ca30-40fe-ac95-72e232d06872',
+      image: 'https://image.tmdb.org/t/p/original/yDVknSU4F7kyZ5o19xIOFbvpBoD.jpg',
+      title: 'Brother Bear',
     },
     9: {
-      url: 'https://www.netflix.com/watch/80117498',
-      image: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg',
-      title: 'Joker',
+      url: 'https://www.disneyplus.com/browse/entity-2fc478cb-0694-49c1-9def-b06cd9cddb6f',
+      image: 'https://m.media-amazon.com/images/M/MV5BMTA5MTE2Mzc5MjReQTJeQWpwZ15BbWU4MDk0Njg2ODUx._V1_.jpg',
+      title: 'The Descendants',
     },
     10: {
-      url: 'https://www.disneyplus.com/movies/moana/4Je9KsYp4vId',
-      image: 'https://image.tmdb.org/t/p/w500/z4x0Bp48ar3Mda8KiPD1vwSY3D8.jpg',
-      title: 'Moana',
+      url: 'https://www.disneyplus.com/play/9c1b0ec2-2e4e-4717-89fb-bdf3a45523df',
+      image: 'https://i.ebayimg.com/00/s/MTYwMFgxMTA1/z/r28AAOSwGLVfqn3m/$_57.JPG?set_id=8800005007',
+      title: 'Cars',
     },
     11: {
-      url: 'https://www.disneyplus.com/movies/mulan-2020/3X6d3k84QvKQ',
-      image: 'https://image.tmdb.org/t/p/w500/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg',
-      title: "Mulan (2020)",
+      url: 'https://www.disneyplus.com/play/e291d4ea-cd86-4eb2-9f39-20d2b75165ee',
+      image: 'https://cdn.europosters.eu/image/750/120005.jpg',
+      title: "Lilo & Stitch",
     },
   };
 
@@ -232,7 +234,7 @@ function App() {
   <Modal onClose={() => setOpenDoor(null)}>
     <h2 style={{
       fontFamily: 'Georgia, serif',
-      fontSize: '2rem',
+      fontSize: '2.5rem',
       fontWeight: '700',
       color: '#333',
       marginBottom: '1rem',

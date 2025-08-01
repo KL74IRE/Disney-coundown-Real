@@ -2,7 +2,6 @@ import React from 'react';
 
 function App() {
   const doors = Array.from({ length: 11 }, (_, i) => i + 1);
-
   const [openDoor, setOpenDoor] = React.useState(null);
   const [hoveredDoor, setHoveredDoor] = React.useState(null);
 
@@ -10,9 +9,13 @@ function App() {
     textAlign: 'center',
     padding: 20,
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: '#f5f5f5',
     minHeight: '100vh',
+    backgroundImage: 'url("/pictures/Disney-Background.jpg")',  // <-- fixed path
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
   };
+
 
   const gridStyle = {
     display: 'grid',
@@ -62,7 +65,6 @@ function App() {
     transform: 'scale(1.05)',
   };
 
-  // Movie info for each door
   const doorLinks = {
     1: {
       url: 'https://www.netflix.com/watch/70026002',
@@ -168,7 +170,7 @@ function App() {
 
       {openDoor && (
         <Modal onClose={() => setOpenDoor(null)}>
-          <h2>{doorLinks[openDoor].title}</h2>
+          <h2 style={{ color: '#e91e63' }}>✨ {doorLinks[openDoor].title} ✨</h2>
           <img
             src={doorLinks[openDoor].image}
             alt={doorLinks[openDoor].title}
@@ -185,6 +187,22 @@ function App() {
           </a>
         </Modal>
       )}
+
+      {/* Animation keyframes */}
+      <style>
+        {`
+          @keyframes popIn {
+            from {
+              transform: scale(0.8);
+              opacity: 0;
+            }
+            to {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }
@@ -201,22 +219,22 @@ function Modal({ children, onClose }) {
         alignItems: 'center',
         zIndex: 999,
       }}
-      onClick={onClose} // close when clicking outside
+      onClick={onClose}
     >
       <div
         style={{
           backgroundColor: 'white',
           padding: 20,
-          borderRadius: 10,
+          borderRadius: 15,
+          border: '4px solid #ff69b4',
           maxWidth: 400,
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+          boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
+          animation: 'popIn 0.3s ease',
         }}
-        onClick={e => e.stopPropagation()} // prevent close on inside click
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
-        <button onClick={onClose} style={{ marginTop: 20 }}>
-          Close
-        </button>
+        <button onClick={onClose} style={{ marginTop: 20 }}>Close</button>
       </div>
     </div>
   );

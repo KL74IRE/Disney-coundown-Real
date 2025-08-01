@@ -62,7 +62,7 @@ function App() {
     fontFamily: 'Arial, sans-serif',
     textAlign: 'center',
     minHeight: '100vh',
-    backgroundImage: 'url(/Pictures/Disney-Background.jpg)',  // note the leading slash
+    backgroundImage: 'url(Pictures/Disney-Background.jpg)',  // note the leading slash
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -228,25 +228,72 @@ function App() {
         })}
       </div>
 
-      {openDoor && (
-        <Modal onClose={() => setOpenDoor(null)}>
-          <h2 style={{ color: '#e91e63' }}>✨ {doorLinks[openDoor].title} ✨</h2>
-          <img
-            src={doorLinks[openDoor].image}
-            alt={doorLinks[openDoor].title}
-            style={{ width: '100%', borderRadius: 8, marginBottom: 15 }}
-          />
-          <p>Enjoy this movie!</p>
-          <a
-            href={doorLinks[openDoor].url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontWeight: 'bold', color: '#1976d2', textDecoration: 'underline' }}
-          >
-            Watch it here
-          </a>
-        </Modal>
-      )}
+{openDoor && (
+  <Modal onClose={() => setOpenDoor(null)}>
+    <h2 style={{
+      fontFamily: 'Georgia, serif',
+      fontSize: '2rem',
+      fontWeight: '700',
+      color: '#333',
+      marginBottom: '1rem',
+      textTransform: 'uppercase',
+      letterSpacing: '1px',
+      textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
+      textEmphasis: 'underline',
+    }}>
+      {doorLinks[openDoor].title}
+    </h2>
+
+    <img
+      src={doorLinks[openDoor].image}
+      alt={doorLinks[openDoor].title}
+      style={{ width: '100%', borderRadius: 12, marginBottom: 20 }}
+    />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <a
+        href={doorLinks[openDoor].url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: 'inline-block',
+          padding: '12px 24px',
+          backgroundColor: '#ff4081',
+          color: '#fff',
+          fontWeight: 'bold',
+          borderRadius: 8,
+          textDecoration: 'none',
+          textAlign: 'center',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+          transition: 'background-color 0.2s ease',
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
+        onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
+      >
+        Unlock the Magic
+      </a>
+      <button
+        onClick={() => setOpenDoor(null)}
+        style={{
+          padding: '10px 20px',
+          backgroundColor: '#ddd',
+          color: '#333',
+          border: 'none',
+          borderRadius: 8,
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          textAlign: 'center',
+          transition: 'background-color 0.2s ease',
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = '#ccc'}
+        onMouseLeave={(e) => e.target.style.backgroundColor = '#ddd'}
+      >
+        Maybe later
+      </button>
+    </div>
+  </Modal>
+)}
+
+
 
       {/* Animation keyframes */}
       <style>
@@ -288,16 +335,18 @@ function Modal({ children, onClose }) {
           borderRadius: 15,
           border: '4px solid #ff69b4',
           maxWidth: 400,
+          width: '90%',
           boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
           animation: 'popIn 0.3s ease',
+          textAlign: 'center',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
-        <button onClick={onClose} style={{ marginTop: 20 }}>Close</button>
       </div>
     </div>
   );
 }
+
 
 export default App;

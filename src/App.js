@@ -10,24 +10,33 @@ function App() {
     padding: 20,
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     minHeight: '100vh',
-    backgroundImage: 'url("/pictures/Disney-Background.jpg")',  // <-- fixed path
+    backgroundImage: 'url(/pictures/Disney-Background.jpg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
   };
 
 
+
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(5, 100px)',
-    gap: '30px',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gap: '20px',
     justifyContent: 'center',
     marginTop: 30,
+    maxWidth: 550,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '10px',   // <-- optional padding inside grid container
+    boxSizing: 'border-box',
   };
 
+
+
   const doorStyle = {
-    width: 100,
-    height: 100,
+    width: '100%',
+    aspectRatio: '1 / 1',
+    maxWidth: 100,
     backgroundColor: '#1976d2',
     color: 'white',
     borderRadius: 15,
@@ -42,11 +51,16 @@ function App() {
     transition: 'background-color 0.3s, transform 0.2s',
     padding: '10px',
     textAlign: 'center',
+    border: '3px solid white',  // <-- added border
+    boxSizing: 'border-box',    // important to include border in size calculation
   };
 
+
+
   const specialDoorStyle = {
-    width: 620,
+    gridColumn: 'span 5',  // span full row
     height: 200,
+    maxWidth: 635,
   };
 
   const doorTextStyle = {

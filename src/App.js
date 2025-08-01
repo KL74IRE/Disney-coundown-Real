@@ -4,63 +4,35 @@ function App() {
   const doors = Array.from({ length: 11 }, (_, i) => i + 1);
   const [openDoor, setOpenDoor] = React.useState(null);
   const [hoveredDoor, setHoveredDoor] = React.useState(null);
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 
-  const containerStyle = {
-    textAlign: 'center',
-    padding: 20,
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    minHeight: '100vh',
-    backgroundImage: 'url(/pictures/Disney-Background.jpg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  };
+  React.useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-
+  const isNarrow = windowWidth < 600;  // breakpoint for responsive switch
 
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
+    gridTemplateColumns: isNarrow ? 'repeat(2, 1fr)' : 'repeat(5, 1fr)',
     gap: '20px',
     justifyContent: 'center',
-    marginTop: 30,
-    maxWidth: 550,
+    marginTop: 50,
+    maxWidth: isNarrow ? 320 : 550,
     marginLeft: 'auto',
     marginRight: 'auto',
-    padding: '10px',   // <-- optional padding inside grid container
+    padding: '10px',
     boxSizing: 'border-box',
   };
 
-
-
-  const doorStyle = {
-    width: '100%',
-    aspectRatio: '1 / 1',
-    maxWidth: 100,
-    backgroundColor: '#1976d2',
-    color: 'white',
-    borderRadius: 15,
-    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: '700',
-    cursor: 'pointer',
-    userSelect: 'none',
-    transition: 'background-color 0.3s, transform 0.2s',
-    padding: '10px',
-    textAlign: 'center',
-    border: '3px solid white',  // <-- added border
-    boxSizing: 'border-box',    // important to include border in size calculation
-  };
-
-
-
   const specialDoorStyle = {
-    gridColumn: 'span 5',  // span full row
+    gridColumn: isNarrow ? 'span 2' : 'span 5',  // span full row depending on width
     height: 200,
-    maxWidth: 635,
+    maxWidth: isNarrow ? 320 : 635,
   };
 
   const doorTextStyle = {
@@ -75,15 +47,46 @@ function App() {
   };
 
   const dateTextStyle = {
-  fontSize: 14,
-  color: '#ffd700', // gold
-  marginTop: 5,
-};
+    fontSize: 14,
+    color: '#ffd700', // gold
+    marginTop: 5,
+  };
 
   const doorHover = {
-    backgroundColor: '#115293',
+    backgroundColor: '#ff0000ff',
     transform: 'scale(1.05)',
   };
+
+  const containerStyle = {
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif',
+    textAlign: 'center',
+    minHeight: '100vh',
+    backgroundImage: 'url(/Pictures/Disney-Background.jpg)',  // note the leading slash
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  };
+
+
+  const doorStyle = {
+    backgroundColor: 'rgba(25, 118, 210, 0.45)',
+    color: 'white',
+    borderRadius: 10,
+    padding: 20,
+    cursor: 'pointer',
+    
+    userSelect: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 100,
+    transition: 'all 0.3s ease',
+    border: '2px solid #ffffffff',
+    fontWeight: 'bold',
+  };
+
 
   const doorLinks = {
     1: {
@@ -160,7 +163,25 @@ function App() {
 
   return (
     <div style={containerStyle}>
-      <h1>Countdown to Disneyland!</h1>
+      <h1 style={{
+        fontFamily: 'Waltograph, cursive',
+        fontSize: '2.8rem',
+        color: '#ffffffff',
+        textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)',
+        margin: 0,
+        marginTop: '60px'
+      }}>
+        Countdown to
+      </h1>
+      <h1 style={{
+        fontFamily: 'Waltograph, cursive',
+        fontSize: '3.8rem',
+        color: '#ff0000ff',
+        textShadow: '3px 3px 6px rgba(0,0,0,0.6)',
+        marginTop: '20px',
+      }}>
+        Disneyland!
+      </h1>
       <div style={gridStyle}>
         {doors.map((day) => {
           const daysToGo = 11 - day;
@@ -183,7 +204,6 @@ function App() {
                   <div style={todaysTextStyle}>Today's the day</div>
                   <div style={dateTextStyle}>{doorDates[day]}</div>
                 </div>
-
               </div>
             );
           }

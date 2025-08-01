@@ -60,6 +60,12 @@ function App() {
     color: '#ffeb3b',
   };
 
+  const dateTextStyle = {
+  fontSize: 14,
+  color: '#ffd700', // gold
+  marginTop: 5,
+};
+
   const doorHover = {
     backgroundColor: '#115293',
     transform: 'scale(1.05)',
@@ -123,6 +129,21 @@ function App() {
     },
   };
 
+  const doorDates = {
+  1: '8th Aug',
+  2: '9th Aug',
+  3: '10th Aug',
+  4: '11th Aug',
+  5: '12th Aug',
+  6: '13th Aug',
+  7: '14th Aug',
+  8: '15th Aug',
+  9: '16th Aug',
+  10: '17th Aug',
+  11: '18th Aug', // Today’s the day
+};
+
+
   return (
     <div style={containerStyle}>
       <h1>Countdown to Disneyland!</h1>
@@ -144,7 +165,11 @@ function App() {
                 onClick={() => setOpenDoor(day)}
               >
                 <div style={doorTextStyle}></div>
-                <div style={todaysTextStyle}>Today's the day</div>
+                <div>
+                  <div style={todaysTextStyle}>Today's the day</div>
+                  <div style={dateTextStyle}>{doorDates[day]}</div>
+                </div>
+
               </div>
             );
           }
@@ -163,6 +188,7 @@ function App() {
               <div style={doorTextStyle}>
                 {daysToGo} day{daysToGo > 1 ? 's' : ''} to go
               </div>
+              <div style={dateTextStyle}>{doorDates[day]}</div>
             </div>
           );
         })}

@@ -1,21 +1,41 @@
+// Import React library for building UI components
 import React from 'react';
 
+// Main App component
 function App() {
+  // Array of door numbers (1-11)
   const doors = Array.from({ length: 11 }, (_, i) => i + 1);
+  // State for which door is open in modal
   const [openDoor, setOpenDoor] = React.useState(null);
+  // State for which door is currently hovered
   const [hoveredDoor, setHoveredDoor] = React.useState(null);
+  // State for current window width (for responsive layout)
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  // State for which door is locked (shows locked modal)
+  const [lockedDoor, setLockedDoor] = React.useState(null);
+  // State for override lock (admin unlock)
+  const [overrideLock, setOverrideLock] = React.useState(false);
+  // Secret code for override unlock
+  const correctCode = '2012'; // Set your secret 4-digit code here
+  // Responsive breakpoint for grid layout
+  const isNarrow = windowWidth < 600;  // breakpoint for responsive switch
+  const [showOverrideInput, setShowOverrideInput] = React.useState(false);
+  const [codeInput, setCodeInput] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
+
+  // Effect to update window width on resize
   React.useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
     }
     window.addEventListener('resize', handleResize);
+    // Cleanup event listener on unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isNarrow = windowWidth < 600;  // breakpoint for responsive switch
-
+  // --- Styles ---
+  // Grid style for doors
   const gridStyle = {
     display: 'grid',
     gridTemplateColumns: isNarrow ? 'repeat(2, 1fr)' : 'repeat(5, 1fr)',
@@ -29,16 +49,19 @@ function App() {
     boxSizing: 'border-box',
   };
 
+  // Special style for the last door (today's door)
   const specialDoorStyle = {
     gridColumn: isNarrow ? 'span 2' : 'span 5',  // span full row depending on width
     height: 200,
     maxWidth: isNarrow ? 320 : 635,
   };
 
+  // Style for door text (days to go)
   const doorTextStyle = {
     fontSize: 18,
   };
 
+  // Style for today's text (big, bold)
   const todaysTextStyle = {
     fontSize: 45,           // bigger font size
     fontWeight: '900',      // very bold
@@ -48,17 +71,20 @@ function App() {
     letterSpacing: '1px',   // add some spacing for clarity
   };
 
+  // Style for date text under each door
   const dateTextStyle = {
     fontSize: 14,
     color: '#ffd700', // gold
     marginTop: 5,
   };
 
+  // Style for door hover effect
   const doorHover = {
     backgroundColor: '#ff0000ff',
     transform: 'scale(1.05)',
   };
 
+  // Container style for the whole app
   const containerStyle = {
     padding: '20px',
     fontFamily: 'Arial, sans-serif',
@@ -70,14 +96,13 @@ function App() {
     backgroundRepeat: 'no-repeat',
   };
 
-
+  // Style for each door
   const doorStyle = {
     backgroundColor: 'rgba(25, 118, 210, 0.45)',
     color: 'white',
     borderRadius: 10,
     padding: 20,
     cursor: 'pointer',
-    
     userSelect: 'none',
     display: 'flex',
     flexDirection: 'column',
@@ -89,22 +114,14 @@ function App() {
     fontWeight: 'bold',
   };
 
-  const [lockedDoor, setLockedDoor] = React.useState(null);
-  const [overrideLock, setOverrideLock] = React.useState(false);
-
-  const correctCode = '2012'; // Set your secret 4-digit code here
-
+  // Handler for override button (admin unlock)
   const handleOverrideClick = () => {
-    const input = prompt('Enter 4-digit override code:');
-    if (input === correctCode) {
-      setOverrideLock(prev => !prev);
-    } else if (input !== null) {
-      alert('Incorrect code. Access denied.');
-    }
+    setShowOverrideInput(true);
+    setCodeInput('');
+    setErrorMessage('');
   };
 
-
-
+  // Links, images, and titles for each door (day)
   const doorLinks = {
     1: {
       url: 'https://www.disneyplus.com/play/c9ee959b-7249-4a4c-9708-9ffd1ddb00f1',
@@ -163,22 +180,25 @@ function App() {
     },
   };
 
-const doorDates = {
-  1: '2025-08-08',
-  2: '2025-08-09',
-  3: '2025-08-10',
-  4: '2025-08-11',
-  5: '2025-08-12',
-  6: '2025-08-13',
-  7: '2025-08-14',
-  8: '2025-08-15',
-  9: '2025-08-16',
-  10: '2025-08-17',
-  11: '2025-08-18',  // today
-};
+  // Dates for each door (when each unlocks)
+  const doorDates = {
+    1: '2025-08-08',
+    2: '2025-08-09',
+    3: '2025-08-10',
+    4: '2025-08-11',
+    5: '2025-08-12',
+    6: '2025-08-13',
+    7: '2025-08-14',
+    8: '2025-08-15',
+    9: '2025-08-16',
+    10: '2025-08-17',
+    11: '2025-08-18',  // today
+  };
 
+  // --- Render ---
   return (
     <div style={containerStyle}>
+      {/* Override button for admin unlock */}
       <button
         onClick={handleOverrideClick}
         style={{
@@ -196,10 +216,10 @@ const doorDates = {
           zIndex: 1000,
           fontWeight: 'bold',
         }}
-
       >
         {overrideLock ? 'Override ON' : 'Override OFF'}
       </button>
+      {/* Main title */}
       <h1 style={{
         fontFamily: 'Waltograph, cursive',
         fontSize: '2.8rem',
@@ -210,6 +230,7 @@ const doorDates = {
       }}>
         Countdown to
       </h1>
+      {/* Subtitle */}
       <h1 style={{
         fontFamily: 'Waltograph, cursive',
         fontSize: '3.8rem',
@@ -219,10 +240,12 @@ const doorDates = {
       }}>
         Disneyland!
       </h1>
+      {/* Grid of doors */}
       <div style={gridStyle}>
         {doors.map((day) => {
           const daysToGo = 11 - day;
 
+          // Special rendering for the last door (today's door)
           if (day === 11) {
             return (
               <div
@@ -235,6 +258,7 @@ const doorDates = {
                 onMouseEnter={() => setHoveredDoor(day)}
                 onMouseLeave={() => setHoveredDoor(null)}
                 onClick={() => {
+                  // Only unlock if override is on or date is today/after
                   if (overrideLock || isDateTodayOrAfter(doorDates[day])) {
                     setOpenDoor(day);
                     setLockedDoor(null);
@@ -246,15 +270,17 @@ const doorDates = {
               }}
 
               >
+                {/* Empty door text for today's door */}
                 <div style={doorTextStyle}></div>
                 <div>
                   <div style={todaysTextStyle}>Today's the day</div>
-                  <div style={dateTextStyle}>{doorDates[day]}</div>
+                  <div style={dateTextStyle}>{formatDateForUI(doorDates[day])}</div>
                 </div>
               </div>
             );
           }
 
+          // Render for all other doors
           return (
             <div
               key={day}
@@ -265,6 +291,7 @@ const doorDates = {
               onMouseEnter={() => setHoveredDoor(day)}
               onMouseLeave={() => setHoveredDoor(null)}
               onClick={() => {
+                // Only unlock if override is on or date is today/after
                 if (overrideLock || isDateTodayOrAfter(doorDates[day])) {
                   setOpenDoor(day);
                   setLockedDoor(null);
@@ -276,110 +303,181 @@ const doorDates = {
 
 
             >
+              {/* Show days to go and date */}
               <div style={doorTextStyle}>
                 {daysToGo} day{daysToGo > 1 ? 's' : ''} to go
               </div>
-              <div style={dateTextStyle}>{doorDates[day]}</div>
+              <div style={dateTextStyle}>{formatDateForUI(doorDates[day])}</div>
             </div>
           );
         })}
       </div>
 
-{openDoor && (
-  <Modal onClose={() => setOpenDoor(null)}>
-    <h2 style={{
-      fontFamily: 'Georgia, serif',
-      fontSize: '2.5rem',
-      fontWeight: '700',
-      color: '#333',
-      marginBottom: '1rem',
-      textTransform: 'uppercase',
-      letterSpacing: '1px',
-      textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
-      textEmphasis: 'underline',
-    }}>
-      {doorLinks[openDoor].title}
-    </h2>
+      {/* Modal for open door (shows movie info and link) */}
+      {openDoor && (
+        <Modal onClose={() => setOpenDoor(null)}>
+          <h2 style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: '2.5rem',
+            fontWeight: '700',
+            color: '#333',
+            marginBottom: '1rem',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
+            textEmphasis: 'underline',
+          }}>
+            {doorLinks[openDoor].title}
+          </h2>
 
-    <img
-      src={doorLinks[openDoor].image}
-      alt={doorLinks[openDoor].title}
-      style={{ width: '100%', borderRadius: 12, marginBottom: 20 }}
-    />
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <a
-        href={doorLinks[openDoor].url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          display: 'inline-block',
-          padding: '12px 24px',
-          backgroundColor: '#ff4081',
-          color: '#fff',
-          fontWeight: 'bold',
-          borderRadius: 8,
-          textDecoration: 'none',
-          textAlign: 'center',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-          transition: 'background-color 0.2s ease',
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
-        onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
-      >
-        Unlock the Magic
-      </a>
-      <button
-        onClick={() => setOpenDoor(null)}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#ddd',
-          color: '#333',
-          border: 'none',
-          borderRadius: 8,
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          textAlign: 'center',
-          transition: 'background-color 0.2s ease',
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = '#ccc'}
-        onMouseLeave={(e) => e.target.style.backgroundColor = '#ddd'}
-      >
-        Maybe later
-      </button>
-    </div>
-  </Modal>
-)}
+          {/* Movie/show image */}
+          <img
+            src={doorLinks[openDoor].image}
+            alt={doorLinks[openDoor].title}
+            style={{ width: '100%', borderRadius: 12, marginBottom: 20 }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Link to Disney+ */}
+            <a
+              href={doorLinks[openDoor].url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block',
+                padding: '12px 24px',
+                backgroundColor: '#ff4081',
+                color: '#fff',
+                fontWeight: 'bold',
+                borderRadius: 8,
+                textDecoration: 'none',
+                textAlign: 'center',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                transition: 'background-color 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
+            >
+              Unlock the Magic
+            </a>
+            {/* Button to close modal */}
+            <button
+              onClick={() => setOpenDoor(null)}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#ddd',
+                color: '#333',
+                border: 'none',
+                borderRadius: 8,
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'background-color 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#ccc'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#ddd'}
+            >
+              Maybe later
+            </button>
+          </div>
+        </Modal>
+      )}
 
-{lockedDoor && (
-  <Modal onClose={() => setLockedDoor(null)}>
-    <h2 style={{ color: '#555', fontSize: '1.5rem', marginBottom: '1rem' }}>
-      ✨ Patience, please! ✨
-    </h2>
-    <p style={{ fontSize: '1rem', marginBottom: '1.5rem', color: '#333' }}>
-      The magic for day {lockedDoor} will unlock on <strong>{doorDates[lockedDoor]}</strong>.
-      Stay tuned and get ready for something special!
-    </p>
-    <button
-      onClick={() => setLockedDoor(null)}
-      style={{
-        padding: '10px 20px',
-        backgroundColor: '#ff4081',
-        color: '#fff',
-        border: 'none',
-        borderRadius: 8,
-        fontWeight: 'bold',
-        cursor: 'pointer',
-      }}
-      onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
-      onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
-    >
-      Got it!
-    </button>
-  </Modal>
-)}
+      {/* Modal for locked door (shows locked message) */}
+      {lockedDoor && (
+        <Modal onClose={() => setLockedDoor(null)}>
+          <h2 style={{ color: '#555', fontSize: '1.5rem', marginBottom: '1rem' }}>
+            ✨ Patience, please! ✨
+          </h2>
+          <p style={{ fontSize: '1rem', marginBottom: '1.5rem', color: '#333' }}>
+            The magic for day {lockedDoor} will unlock on <strong>{formatDateForUI(doorDates[lockedDoor])}</strong>.
+            Stay tuned and get ready for something special!
+          </p>
+          {/* Button to close modal */}
+          <button
+            onClick={() => setLockedDoor(null)}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#ff4081',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              fontWeight: 'bold',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
+          >
+          Got it!
+          </button>
+        </Modal>
+      )}
+
+      {showOverrideInput && (
+        <Modal onClose={() => setShowOverrideInput(false)}>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
+            Admin Override
+          </h2>
+          <input
+            type="password"
+            maxLength={4}
+            placeholder="Enter 4-digit code"
+            value={codeInput}
+            onChange={(e) => setCodeInput(e.target.value)}
+            style={{
+              padding: '10px',
+              fontSize: '1rem',
+              borderRadius: 6,
+              border: '1px solid #ccc',
+              marginBottom: '1rem',
+              width: '80%',
+              textAlign: 'center',
+            }}
+          />
+          {errorMessage && (
+            <p style={{ color: 'red', marginBottom: '1rem' }}>{errorMessage}</p>
+          )}
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            <button
+              onClick={() => {
+                if (codeInput === correctCode) {
+                  setOverrideLock((prev) => !prev);
+                  setShowOverrideInput(false);
+                } else {
+                  setErrorMessage('Incorrect code. Access denied.');
+                }
+              }}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#4caf50',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 6,
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => setShowOverrideInput(false)}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#aaa',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 6,
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
+      )}
 
 
-{/* Animation keyframes */}
+      {/* Animation keyframes for modal pop-in effect */}
       <style>
         {`
           @keyframes popIn {
@@ -398,6 +496,7 @@ const doorDates = {
   );
 }
 
+// Modal component for pop-up dialogs
 function Modal({ children, onClose }) {
   return (
     <div
@@ -424,6 +523,7 @@ function Modal({ children, onClose }) {
           animation: 'popIn 0.3s ease',
           textAlign: 'center',
         }}
+        // Prevent modal from closing when clicking inside
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -432,6 +532,7 @@ function Modal({ children, onClose }) {
   );
 }
 
+// Helper function: returns true if today is on/after the given date
 function isDateTodayOrAfter(doorDateStr) {
   const today = new Date();
   today.setHours(0,0,0,0);  // set to midnight to ignore time
@@ -442,4 +543,28 @@ function isDateTodayOrAfter(doorDateStr) {
   return today >= doorDate;
 }
 
+function formatDateForUI(dateStr) {
+  const date = new Date(dateStr);
+  const day = date.getDate();
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = monthNames[date.getMonth()];
+
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? 'st'
+      : day % 10 === 2 && day !== 12
+      ? 'nd'
+      : day % 10 === 3 && day !== 13
+      ? 'rd'
+      : 'th';
+
+  return `${month} ${day}${suffix}`; // e.g. "August 12th"
+}
+
+
+
+// Export main App component
 export default App;

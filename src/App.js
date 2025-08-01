@@ -89,6 +89,21 @@ function App() {
     fontWeight: 'bold',
   };
 
+  const [lockedDoor, setLockedDoor] = React.useState(null);
+  const [overrideLock, setOverrideLock] = React.useState(false);
+
+  const correctCode = '2012'; // Set your secret 4-digit code here
+
+  const handleOverrideClick = () => {
+    const input = prompt('Enter 4-digit override code:');
+    if (input === correctCode) {
+      setOverrideLock(prev => !prev);
+    } else if (input !== null) {
+      alert('Incorrect code. Access denied.');
+    }
+  };
+
+
 
   const doorLinks = {
     1: {
@@ -148,23 +163,43 @@ function App() {
     },
   };
 
-  const doorDates = {
-  1: '8th Aug',
-  2: '9th Aug',
-  3: '10th Aug',
-  4: '11th Aug',
-  5: '12th Aug',
-  6: '13th Aug',
-  7: '14th Aug',
-  8: '15th Aug',
-  9: '16th Aug',
-  10: '17th Aug',
-  11: '18th Aug', // Today’s the day
+const doorDates = {
+  1: '2025-08-08',
+  2: '2025-08-09',
+  3: '2025-08-10',
+  4: '2025-08-11',
+  5: '2025-08-12',
+  6: '2025-08-13',
+  7: '2025-08-14',
+  8: '2025-08-15',
+  9: '2025-08-16',
+  10: '2025-08-17',
+  11: '2025-08-18',  // today
 };
-
 
   return (
     <div style={containerStyle}>
+      <button
+        onClick={handleOverrideClick}
+        style={{
+          position: 'fixed',
+          top: 30,
+          left: '85%',
+          transform: 'translateX(-50%)',
+          padding: '4px 8px',
+          fontSize: '0.5rem',
+          backgroundColor: overrideLock ? '#4caf50' : '#f44336',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          cursor: 'pointer',
+          zIndex: 1000,
+          fontWeight: 'bold',
+        }}
+
+      >
+        {overrideLock ? 'Override ON' : 'Override OFF'}
+      </button>
       <h1 style={{
         fontFamily: 'Waltograph, cursive',
         fontSize: '2.8rem',
@@ -199,7 +234,17 @@ function App() {
                 }}
                 onMouseEnter={() => setHoveredDoor(day)}
                 onMouseLeave={() => setHoveredDoor(null)}
-                onClick={() => setOpenDoor(day)}
+                onClick={() => {
+                  if (overrideLock || isDateTodayOrAfter(doorDates[day])) {
+                    setOpenDoor(day);
+                    setLockedDoor(null);
+
+                  } else {
+                    setLockedDoor(day);
+                    setOpenDoor(null);
+                  }
+              }}
+
               >
                 <div style={doorTextStyle}></div>
                 <div>
@@ -219,7 +264,17 @@ function App() {
               }}
               onMouseEnter={() => setHoveredDoor(day)}
               onMouseLeave={() => setHoveredDoor(null)}
-              onClick={() => setOpenDoor(day)}
+              onClick={() => {
+                if (overrideLock || isDateTodayOrAfter(doorDates[day])) {
+                  setOpenDoor(day);
+                  setLockedDoor(null);
+                } else {
+                  setLockedDoor(day);
+                  setOpenDoor(null);
+                }
+              }}
+
+
             >
               <div style={doorTextStyle}>
                 {daysToGo} day{daysToGo > 1 ? 's' : ''} to go
@@ -295,9 +350,36 @@ function App() {
   </Modal>
 )}
 
+{lockedDoor && (
+  <Modal onClose={() => setLockedDoor(null)}>
+    <h2 style={{ color: '#555', fontSize: '1.5rem', marginBottom: '1rem' }}>
+      ✨ Patience, please! ✨
+    </h2>
+    <p style={{ fontSize: '1rem', marginBottom: '1.5rem', color: '#333' }}>
+      The magic for day {lockedDoor} will unlock on <strong>{doorDates[lockedDoor]}</strong>.
+      Stay tuned and get ready for something special!
+    </p>
+    <button
+      onClick={() => setLockedDoor(null)}
+      style={{
+        padding: '10px 20px',
+        backgroundColor: '#ff4081',
+        color: '#fff',
+        border: 'none',
+        borderRadius: 8,
+        fontWeight: 'bold',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={(e) => e.target.style.backgroundColor = '#f50057'}
+      onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4081'}
+    >
+      Got it!
+    </button>
+  </Modal>
+)}
 
 
-      {/* Animation keyframes */}
+{/* Animation keyframes */}
       <style>
         {`
           @keyframes popIn {
@@ -350,5 +432,14 @@ function Modal({ children, onClose }) {
   );
 }
 
+function isDateTodayOrAfter(doorDateStr) {
+  const today = new Date();
+  today.setHours(0,0,0,0);  // set to midnight to ignore time
+
+  const doorDate = new Date(doorDateStr);
+  doorDate.setHours(0,0,0,0);
+
+  return today >= doorDate;
+}
 
 export default App;

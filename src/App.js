@@ -240,6 +240,13 @@ function App() {
       }}>
         Disneyland!
       </h1>
+       <p style={{
+        fontSize: '1.2rem',
+        marginTop: '5px',
+        color: '#ffffffff'
+      }}>
+        Made for Reggie, Bobby, Cillian, Alannah and Taylor by Glen 2025
+      </p>
       {/* Grid of doors */}
       <div style={gridStyle}>
         {doors.map((day) => {
